@@ -1,0 +1,6 @@
+**/.vscode
+**/.idea
+
+*.exe
+*.m4a
+.DS_Store
