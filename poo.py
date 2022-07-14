@@ -1,4 +1,5 @@
 # poo.py
+from logging import exception
 import os
 
 import discord
@@ -99,10 +100,10 @@ async def play(ctx,url):
 
         async with ctx.typing():
             filename = await YTDLSource.from_url(url, loop=bot.loop)
-            print("Test")
-            voice_channel.play(discord.FFmpegPCMAudio(executable="ffmpeg.exe", source=filename))
+            voice_channel.play(discord.FFmpegPCMAudio(executable="ffmpeg-5.0.1-essentials_build/bin/ffmpeg.exe", source=filename))
         await ctx.send('**Now playing:** {}'.format(filename))
     except:
+        print(exception)
         await ctx.send("The bot is not connected to a voice channel.")
 
 
