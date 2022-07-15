@@ -13,11 +13,13 @@ from dotenv import load_dotenv
 from mcstatus import JavaServer
 
 
-bot = commands.Bot(command_prefix='$')
-mcserver = JavaServer.lookup('85.14.195.116')
-
 load_dotenv()
+MC_SERVER_IP = os.getenv('MC_SERVER_IP')
+print(MC_SERVER_IP)
 TOKEN = os.getenv('DISCORD_TOKEN')
+
+bot = commands.Bot(command_prefix='$')
+mcserver = JavaServer.lookup(MC_SERVER_IP)
 
 
 @bot.event

@@ -24,7 +24,9 @@ Install the requirements
 $ pip install -r requirements.txt
 ```
 
-Open `.env` and edit the `DISCORD_TOKEN` variable
+Open `.env` and edit the `DISCORD_TOKEN` variable. \
+_If you want to connect a Minecraft Server of your choice, change the `MC_SERVER_IP`
+variable as well._
 
 ```bash
 $ code .env
@@ -45,6 +47,6 @@ $ python poo.py
 
 ## References
 
-[Discord Developer Portal](https://discord.com/developers/docs/intro)
-[DiscordPy](https://discordpy.readthedocs.io/en/stable/ext/commands/commands.html)
+[Discord Developer Portal](https://discord.com/developers/docs/intro) \
+[DiscordPy](https://discordpy.readthedocs.io/en/stable/ext/commands/commands.html) \
 [MC-Status](https://github.com/py-mine/mcstatus)
