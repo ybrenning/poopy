@@ -1,0 +1,4 @@
+discord.py==1.7.3
+mcstatus==9.2.0
+python-dotenv==0.20.0
+youtube_dl==2021.12.17

@@ -1,137 +1,110 @@
-# poo.py
-from logging import exception
+#!/usr/bin/env python3
+
 import os
+import asyncio
 
 import discord
+from discord.ext import commands
+
 import youtube_dl
-from discord.ext import commands, tasks
+
 from dotenv import load_dotenv
 
+from mcstatus import JavaServer
+
+
+bot = commands.Bot(command_prefix='$')
+mcserver = JavaServer.lookup('85.14.195.116')
 
 load_dotenv()
-
 TOKEN = os.getenv('DISCORD_TOKEN')
 
-intents = discord.Intents().all()
-client = discord.Client(intents=intents)
-bot = commands.Bot(command_prefix='.',intents=intents)
 
-@client.event
+@bot.event
 async def on_ready():
-    print(f'We have logged in as {client.user}')
+    print(f'We have logged in as {bot.user.name}.')
 
 
-@client.event
-async def on_message(message):
-    if message.author == client.user:
-        return
+@bot.command(
+    brief='Pings the user', 
+    help='This thing is self-explanatory, why would you even ask for extra help?'
+)
+async def ping(ctx):
+    await ctx.send('pong')
+
+
+@bot.command(
+    brief='Play a song from YouTube',
+    help='Takes a YouTube URL as an argument and joins your current vc to play the audio'
+)
+async def play(ctx, url):
+    voice_clients = {}
+
+    yt_dl_opts = {'format': 'bestaudio/best'}
+    ytdl = youtube_dl.YoutubeDL(yt_dl_opts)
+
+    ffmpeg_options = {'options': '-vn'}
     
-    if message.content == "POOP":
-        await message.channel.send("💩💩💩")
-
-
-youtube_dl.utils.bug_reports_message = lambda: ''
-
-ytdl_format_options = {
-    'format': 'bestaudio/best',
-    'restrictfilenames': True,
-    'noplaylist': True,
-    'nocheckcertificate': True,
-    'ignoreerrors': False,
-    'logtostderr': False,
-    'quiet': True,
-    'no_warnings': True,
-    'default_search': 'auto',
-    'source_address': '0.0.0.0' # bind to ipv4 since ipv6 addresses cause issues sometimes
-}
-
-ffmpeg_options = {
-    'options': '-vn'
-}
-
-ytdl = youtube_dl.YoutubeDL(ytdl_format_options)
-
-class YTDLSource(discord.PCMVolumeTransformer):
-    def __init__(self, source, *, data, volume=0.5):
-        super().__init__(source, volume)
-        self.data = data
-        self.title = data.get('title')
-        self.url = ""
-
-
-    @classmethod
-    async def from_url(cls, url, *, loop=None, stream=False):
-        loop = loop or asyncio.get_event_loop()
-        data = await loop.run_in_executor(None, lambda: ytdl.extract_info(url, download=not stream))
-        if 'entries' in data:
-            # take first item from a playlist
-            data = data['entries'][0]
-        filename = data['title'] if stream else ytdl.prepare_filename(data)
-        return filename
-
-
-@bot.command(name='join', help='Tells the bot to join the voice channel')
-async def join(ctx):
-    if not ctx.message.author.voice:
-        await ctx.send("{} is not connected to a voice channel".format(ctx.message.author.name))
-        return
+    msg = ctx.message
+    
+    if (ctx.author.voice):
+        voice_client = await msg.author.voice.channel.connect()
+        voice_clients[voice_client.guild.id] = voice_client
     else:
-        channel = ctx.message.author.voice.channel
-    await channel.connect()
-
-
-@bot.command(name='leave', help='To make the bot leave the voice channel')
+        await ctx.send('You are not connected to a voice channel :poop:')
+        
+    try:
+        loop = asyncio.get_event_loop()
+        data = await loop.run_in_executor(None, lambda: ytdl.extract_info(url, download=False))
+            
+        song = data['url']
+        player = discord.FFmpegPCMAudio(song, **ffmpeg_options)
+            
+        voice_clients[msg.guild.id].play(player)
+    except Exception as err:
+        print(err)
+    
+    
+@bot.command(
+    brief='Leaves current voice channel',
+    help='Read the name of the command jesus fucking christ'
+)
 async def leave(ctx):
-    voice_client = ctx.message.guild.voice_client
-    if voice_client.is_connected():
-        await voice_client.disconnect()
+    if (ctx.author.voice):
+        await ctx.guild.voice_client.disconnect()
     else:
-        await ctx.send("The bot is not connected to a voice channel.")
+        await ctx.send('I am not currently in a voice channel :poop:')
+        
 
-
-@bot.command(name='play_song', help='To play song')
-async def play(ctx,url):
-    print("Playing song")
-    try :
-        server = ctx.message.guild
-        voice_channel = server.voice_client
-        print(server)
-        print(voice_channel)
-
-        async with ctx.typing():
-            filename = await YTDLSource.from_url(url, loop=bot.loop)
-            voice_channel.play(discord.FFmpegPCMAudio(executable="ffmpeg-5.0.1-essentials_build/bin/ffmpeg.exe", source=filename))
-        await ctx.send('**Now playing:** {}'.format(filename))
-    except:
-        print(exception)
-        await ctx.send("The bot is not connected to a voice channel.")
-
-
-@bot.command(name='pause', help='This command pauses the song')
+@bot.command(
+    brief='Pauses current audio',
+    help='Just read the name holy'
+)
 async def pause(ctx):
-    voice_client = ctx.message.guild.voice_client
-    if voice_client.is_playing():
-        await voice_client.pause()
+    if (ctx.author.voice):
+        await ctx.guild.voice_client.pause()
     else:
-        await ctx.send("The bot is not playing anything at the moment.")
+        await ctx.send('I am not currently in a voice channel :poop:')
 
-  
-@bot.command(name='resume', help='Resumes the song')
+
+@bot.command(
+    brief='Resume the current audio',
+    help='Stop reading the help section and touch some grass'
+)
 async def resume(ctx):
-    voice_client = ctx.message.guild.voice_client
-    if voice_client.is_paused():
-        await voice_client.resume()
+    if (ctx.author.voice):
+        await ctx.guild.voice_client.resume()
     else:
-        await ctx.send("The bot was not playing anything before this. Use play_song command")
+        await ctx.send('I am not currently in a voice channel :poop:')
 
 
-@bot.command(name='stop', help='Stops the song')
-async def stop(ctx):
-    voice_client = ctx.message.guild.voice_client
-    if voice_client.is_playing():
-        await voice_client.stop()
-    else:
-        await ctx.send("The bot is not playing anything at the moment.")
+@bot.command(
+    brief='Displays status of Minecraft server',
+    help='Show the amount of players currently online as well as the ping'
+)
+async def status(ctx):
+    status = mcserver.status()
+    await ctx.send(f':poop: The MC-server has {status.players.online} player(s) online and replied in {status.latency} ms :poop:')
 
 
 if __name__ == '__main__':
