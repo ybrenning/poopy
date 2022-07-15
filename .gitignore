@@ -1,6 +1,5 @@
 **/.vscode
 **/.idea
+**/__pycache__
 
-*.webm
-*.m4a
 .DS_Store
