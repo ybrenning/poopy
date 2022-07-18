@@ -15,7 +15,6 @@ from mcstatus import JavaServer
 
 load_dotenv()
 MC_SERVER_IP = os.getenv("MC_SERVER_IP")
-print(MC_SERVER_IP)
 TOKEN = os.getenv("DISCORD_TOKEN")
 
 bot = commands.Bot(command_prefix="$")
