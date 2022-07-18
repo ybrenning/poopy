@@ -14,100 +14,101 @@ from mcstatus import JavaServer
 
 
 load_dotenv()
-MC_SERVER_IP = os.getenv('MC_SERVER_IP')
+MC_SERVER_IP = os.getenv("MC_SERVER_IP")
 print(MC_SERVER_IP)
-TOKEN = os.getenv('DISCORD_TOKEN')
+TOKEN = os.getenv("DISCORD_TOKEN")
 
-bot = commands.Bot(command_prefix='$')
+bot = commands.Bot(command_prefix="$")
 mcserver = JavaServer.lookup(MC_SERVER_IP)
 
 
 @bot.event
 async def on_ready():
-    print(f'We have logged in as {bot.user.name}.')
+    print(f"We have logged in as {bot.user.name}.")
 
 
 @bot.command(
-    brief='Pings the user', 
-    help='This thing is self-explanatory, why would you even ask for extra help?'
+    brief="Pings the user",
+    help="This thing is self-explanatory, why would you even ask for extra help?",
 )
 async def ping(ctx):
-    await ctx.send('pong')
+    await ctx.send("pong")
 
 
 @bot.command(
-    brief='Play a song from YouTube',
-    help='Takes a YouTube URL as an argument and joins your current vc to play the audio'
+    brief="Play a song from YouTube",
+    help="Takes a YouTube URL as an argument and joins your current vc to play the audio",
 )
 async def play(ctx, url):
     voice_clients = {}
 
-    yt_dl_opts = {'format': 'bestaudio/best'}
+    yt_dl_opts = {"format": "bestaudio/best"}
     ytdl = youtube_dl.YoutubeDL(yt_dl_opts)
 
-    ffmpeg_options = {'options': '-vn'}
-    
+    ffmpeg_options = {"options": "-vn"}
+
     msg = ctx.message
-    
-    if (ctx.author.voice):
+
+    if ctx.author.voice:
         voice_client = await msg.author.voice.channel.connect()
         voice_clients[voice_client.guild.id] = voice_client
     else:
-        await ctx.send('You are not connected to a voice channel :poop:')
-        
+        await ctx.send("You are not connected to a voice channel :poop:")
+
     try:
         loop = asyncio.get_event_loop()
-        data = await loop.run_in_executor(None, lambda: ytdl.extract_info(url, download=False))
-            
-        song = data['url']
+        data = await loop.run_in_executor(
+            None, lambda: ytdl.extract_info(url, download=False)
+        )
+
+        song = data["url"]
         player = discord.FFmpegPCMAudio(song, **ffmpeg_options)
-            
+
         voice_clients[msg.guild.id].play(player)
     except Exception as err:
         print(err)
-    
-    
+
+
 @bot.command(
-    brief='Leaves current voice channel',
-    help='Read the name of the command jesus fucking christ'
+    brief="Leaves current voice channel",
+    help="Read the name of the command jesus fucking christ",
 )
 async def leave(ctx):
-    if (ctx.author.voice):
+    if ctx.author.voice:
         await ctx.guild.voice_client.disconnect()
     else:
-        await ctx.send('I am not currently in a voice channel :poop:')
-        
+        await ctx.send("I am not currently in a voice channel :poop:")
 
-@bot.command(
-    brief='Pauses current audio',
-    help='Just read the name holy'
-)
+
+@bot.command(brief="Pauses current audio", help="Just read the name holy")
 async def pause(ctx):
-    if (ctx.author.voice):
+    if ctx.author.voice:
         await ctx.guild.voice_client.pause()
     else:
-        await ctx.send('I am not currently in a voice channel :poop:')
+        await ctx.send("I am not currently in a voice channel :poop:")
 
 
 @bot.command(
-    brief='Resume the current audio',
-    help='Stop reading the help section and touch some grass'
+    brief="Resume the current audio",
+    help="Stop reading the help section and touch some grass",
 )
 async def resume(ctx):
-    if (ctx.author.voice):
+    if ctx.author.voice:
         await ctx.guild.voice_client.resume()
     else:
-        await ctx.send('I am not currently in a voice channel :poop:')
+        await ctx.send("I am not currently in a voice channel :poop:")
 
 
 @bot.command(
-    brief='Displays status of Minecraft server',
-    help='Show the amount of players currently online as well as the ping'
+    brief="Displays status of Minecraft server",
+    help="Show the amount of players currently online as well as the ping",
 )
 async def status(ctx):
     status = mcserver.status()
-    await ctx.send(f':poop: The MC-server has {status.players.online} player(s) online and replied in {status.latency} ms :poop:')
+    await ctx.send(
+        f":poop: The MC-server has {status.players.online} player(s) online and replied in {status.latency} ms :poop:"
+    )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     bot.run(TOKEN)
