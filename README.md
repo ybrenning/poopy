@@ -24,11 +24,12 @@ Install the requirements
 $ pip install -r requirements.txt
 ```
 
-Open `.env` and edit the `DISCORD_TOKEN` variable. \
-_If you want to connect a Minecraft Server of your choice, change the `MC_SERVER_IP`
+Create `.env` in the root directory and set the `DISCORD_TOKEN` variable. \
+_If you want to connect a Minecraft Server of your choice, add the `MC_SERVER_IP`
 variable as well._
 
 ```bash
+$ touch .env
 $ code .env
 
 # Or, on Linux CSH:
