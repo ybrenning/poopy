@@ -116,7 +116,7 @@ async def status(ctx):
 async def players(ctx):
     query = mcserver.query()
     await ctx.send(
-        f"The MC-server has the following players online_ {', '.join(query.players.names)}"
+        f":poop: The MC-server has the following players online: {', '.join(query.players.names)} :poop:"
     )
 
 
