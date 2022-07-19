@@ -108,6 +108,15 @@ async def status(ctx):
         f":poop: The MC-server has {status.players.online} player(s) online and replied in {status.latency} ms :poop:"
     )
 
+async def players(ctx):
+    query = mcserver.query()
+    await ctx.send(f"The MC-server has the following players online_ {', '.join(query.players.names)}")
+
+
+@bot.command()
+async def code(ctx):
+    await ctx.send("https://github.com/ybrenning/poopy")
+
 
 if __name__ == "__main__":
     bot.run(TOKEN)
