@@ -108,12 +108,22 @@ async def status(ctx):
         f":poop: The MC-server has {status.players.online} player(s) online and replied in {status.latency} ms :poop:"
     )
 
+
+@bot.command(
+    brief="Displays players on Minecraft server",
+    help="Show names of all players currently on the Minecraft server",
+)
 async def players(ctx):
     query = mcserver.query()
-    await ctx.send(f"The MC-server has the following players online_ {', '.join(query.players.names)}")
+    await ctx.send(
+        f"The MC-server has the following players online_ {', '.join(query.players.names)}"
+    )
 
 
-@bot.command()
+@bot.command(
+    brief="Show source code of this bot",
+    help="Links to the GitHub repository of this bot",
+)
 async def code(ctx):
     await ctx.send("https://github.com/ybrenning/poopy")
 
