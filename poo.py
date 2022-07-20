@@ -133,19 +133,24 @@ async def players(ctx):
 async def code(ctx):
     await ctx.send("https://github.com/ybrenning/poopy")
 
+
 @bot.command(
     brief="Lets poopy speak",
     help="Sends the user's input to the MC-Server",
 )
 async def say(ctx, *, message=None):
-    out_robot = ["beep boop.", "*robot noises*", "*laughs in robot*", "*gears rustling*", "zZz.. zZz.."]
+    out_robot = [
+        "beep boop.",
+        "*robot noises*",
+        "*laughs in robot*",
+        "*gears rustling*",
+        "zZz.. zZz..",
+    ]
     msg_robot = random.choice(out_robot)
     msg = message or msg_robot
     mc.postToChat(f"§8[§bPoopy§8]§a: {msg}")
     await ctx.send(f"Poopy said: {msg}")
-    
+
 
 if __name__ == "__main__":
     bot.run(TOKEN)
-    
-
