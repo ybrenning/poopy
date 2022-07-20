@@ -135,7 +135,7 @@ async def code(ctx):
 
 
 @bot.command(
-    brief="Lets poopy speak",
+    brief="Lets PooPy speak",
     help="Sends the user's input to the MC-Server",
 )
 async def say(ctx, *, message=None):
@@ -146,6 +146,7 @@ async def say(ctx, *, message=None):
         "*gears rustling*",
         "zZz.. zZz..",
     ]
+    
     msg_robot = random.choice(out_robot)
     msg = message or msg_robot
     mc.postToChat(f"§8[§bPoopy§8]§a: {msg}")
