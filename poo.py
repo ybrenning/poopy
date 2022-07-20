@@ -135,7 +135,7 @@ async def code(ctx):
 
 @bot.command(
     brief="Lets poopy speak",
-    help="Sends the user's input onto the MC-Server",
+    help="Sends the user's input to the MC-Server",
 )
 async def say(ctx, *, message=None):
     out_robot = ["beep boop.", "*robot noises*", "*laughs in robot*", "*gears rustling*", "zZz.. zZz.."]
