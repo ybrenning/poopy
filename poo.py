@@ -14,7 +14,7 @@ from mcstatus import JavaServer
 
 from mcpi.minecraft import Minecraft
 
-mc = Minecraft.create("85.14.195.116",4711)
+mc = Minecraft.create("85.14.195.116", 4711)
 
 
 load_dotenv()
@@ -118,7 +118,7 @@ async def status(ctx):
     help="Show names of all players currently on the Minecraft server",
 )
 async def players(ctx):
-    mc.postToChat("§8[$bPoopy§8]§a: I have fetched server data. beep boop.")
+    mc.postToChat("§8[§bPoopy§8]§a: I have fetched server data. beep boop.")
     query = mcserver.query()
     await ctx.send(
         f":poop: The MC-server has the following players online: {', '.join(query.players.names)} :poop:"
