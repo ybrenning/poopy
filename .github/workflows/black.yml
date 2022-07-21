@@ -18,7 +18,6 @@ jobs:
       - name: If needed, commit black changes to the pull request
         if: failure()
         run: |
-          git checkout master
           black .
       - uses: actions/checkout@v2
         with:
