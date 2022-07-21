@@ -18,6 +18,7 @@ jobs:
       - name: If needed, commit black changes to the pull request
         if: failure()
         run: |
+          git checkout master
           black .
           git config --global user.name ybrenning
           git config --global user.email ybrenning@users.noreply.github.com
