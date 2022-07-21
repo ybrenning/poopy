@@ -19,10 +19,7 @@ jobs:
         if: failure()
         run: |
           black .
-          git config --global user.name 'autoblack'
-          git config --global user.email 'cclauss@users.noreply.github.com'
-          echo "Test"
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
-          git commit -am "fixup: Format Python code with Black"
-          git checkout -b "black-formatting"
-          git push origin HEAD:black-formatting
+          git config --global user.name ybrenning
+          git config --global user.email ybrenning@users.noreply.github.com'
+          git commit -am "Black reformatting"
+          git push
