@@ -21,6 +21,8 @@ jobs:
           black .
           git config --global user.name 'autoblack'
           git config --global user.email 'cclauss@users.noreply.github.com'
+          echo "Test"
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
           git commit -am "fixup: Format Python code with Black"
-          git push
+          git checkout -b "black-formatting"
+          git push origin HEAD:black-formatting
