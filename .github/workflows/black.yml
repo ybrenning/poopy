@@ -20,7 +20,6 @@ jobs:
         run: |
           git checkout master
           black .
-          git config --global user.name ybrenning
-          git config --global user.email ybrenning@users.noreply.github.com
-          git commit -am "Black reformatting"
-          git push
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}
