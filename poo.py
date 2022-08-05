@@ -56,6 +56,7 @@ async def play(ctx, url):
     if ctx.author.voice:
         voice_client = await msg.author.voice.channel.connect()
         voice_clients[voice_client.guild.id] = voice_client
+        print(f"You are connected to: {msg.author.voice.channel}")
     else:
         await ctx.send("You are not connected to a voice channel :poop:")
 
