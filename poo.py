@@ -153,7 +153,7 @@ async def say(ctx, *, message=None):
 
     msg_robot = random.choice(out_robot)
     msg = message or msg_robot
-    mc.postToChat(f"§8[§bPoopy§8]§a: {msg}")
+    mc.postToChat(f"§8[§bPoopy§8]§a ({ctx.author}): {msg}")
     await ctx.send(f"Poopy said: {msg}")
 
 

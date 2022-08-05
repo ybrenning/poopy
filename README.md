@@ -5,7 +5,7 @@ This bot can take various commands via a Discord server's text channel and perfo
 An overview of the different possible commands can be displayed by typing `$help` in one of the server's
 text channels.
 
-> Note: In order to use the bot, you must connect it with your Guild using the 
+> Note: In order to use the bot, you must connect it with your Guild using the
 > [Discord Developer Portal](https://discord.com/developers/docs/intro) in order to
 > obtain a corresponding `TOKEN`.
 
