@@ -72,7 +72,7 @@ async def play(ctx, url):
 
         print(f"Playing song in: {voice_clients[msg.guild.id]}")
         voice_clients[msg.guild.id].play(player)
-        print("Done")
+        print("Done!")
     except Exception as err:
         print(err)
 
