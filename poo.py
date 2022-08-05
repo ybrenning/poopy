@@ -66,11 +66,12 @@ async def play(ctx, url):
         )
 
         song = data["url"]
-        print("Test")
+        print("Creating player")
         player = discord.FFmpegPCMAudio(song, **ffmpeg_options)
 
-        print("Test")
+        print(f"Playing song in: {voice_clients[msg.guild.id]}")
         voice_clients[msg.guild.id].play(player)
+        print("Done")
     except Exception as err:
         print(err)
 
