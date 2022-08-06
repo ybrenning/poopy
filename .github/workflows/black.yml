@@ -1,9 +1,9 @@
-name: Autoblack
+name: Black
 
 on: [push, pull_request]
 
 jobs:
-  autoblack:
+  black:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
