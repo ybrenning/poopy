@@ -33,7 +33,7 @@ async def on_ready():
 
 @bot.command(
     brief="Pings the user",
-    help="This thing is self-explanatory, why would you even ask for extra help?"
+    help="This thing is self-explanatory, why would you even ask for extra help?",
 )
 async def ping(ctx):
     await ctx.send("pong")
@@ -41,7 +41,7 @@ async def ping(ctx):
 
 @bot.command(
     brief="Play a song from YouTube",
-    help="Takes a YouTube URL as an argument and joins your current vc to play the audio"
+    help="Takes a YouTube URL as an argument and joins your current vc to play the audio",
 )
 async def play(ctx, url):
     voice_clients = {}
@@ -76,7 +76,7 @@ async def play(ctx, url):
 
 @bot.command(
     brief="Leaves current voice channel",
-    help="Read the name of the command jesus f*cking christ"
+    help="Read the name of the command jesus f*cking christ",
 )
 async def leave(ctx):
     if ctx.author.voice:
@@ -85,10 +85,7 @@ async def leave(ctx):
         await ctx.send("I am not currently in a voice channel :poop:")
 
 
-@bot.command(
-    brief="Pauses current audio", 
-    help="Just read the name holy"
-)
+@bot.command(brief="Pauses current audio", help="Just read the name holy")
 async def pause(ctx):
     if ctx.author.voice:
         await ctx.guild.voice_client.pause()
@@ -98,7 +95,7 @@ async def pause(ctx):
 
 @bot.command(
     brief="Resume the current audio",
-    help="Stop reading the help section and touch some grass"
+    help="Stop reading the help section and touch some grass",
 )
 async def resume(ctx):
     if ctx.author.voice:
@@ -109,7 +106,7 @@ async def resume(ctx):
 
 @bot.command(
     brief="Displays status of Minecraft server",
-    help="Show the amount of players currently online as well as the ping"
+    help="Show the amount of players currently online as well as the ping",
 )
 async def status(ctx):
     status = mcserver.status()
@@ -120,7 +117,7 @@ async def status(ctx):
 
 @bot.command(
     brief="Displays players on Minecraft server",
-    help="Show names of all players currently on the Minecraft server"
+    help="Show names of all players currently on the Minecraft server",
 )
 async def players(ctx):
     mc.postToChat("§8[§bPoopy§8]§a: I have fetched server data. beep boop.")
@@ -132,16 +129,13 @@ async def players(ctx):
 
 @bot.command(
     brief="Show source code of this bot",
-    help="Links to the GitHub repository of this bot"
+    help="Links to the GitHub repository of this bot",
 )
 async def code(ctx):
     await ctx.send("https://github.com/ybrenning/poopy")
 
 
-@bot.command(
-    brief="Lets PooPy speak",
-    help="Sends the user's input to the MC-Server"
-)
+@bot.command(brief="Lets PooPy speak", help="Sends the user's input to the MC-Server")
 async def say(ctx, *, message=None):
     out_robot = [
         "beep boop.",
