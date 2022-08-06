@@ -13,13 +13,12 @@ jobs:
           python-version: 3.10.5
       - name: Install Black
         run: pip install black
-      - name: Run black
+      - name: Run black --check
+        run: black --check .
+      - name: Commit changes
+        if: failure()
         run: |
           black .
-          git diff --quiet . && echo "::set-output name=black_changes::true"
-      - name: Commit changes
-        if: steps.verify_diff.outputs.black_changes == 'true'
-        run: |
           git config --global user.name "ybrenning"
           git config --global user.email "yannickbrenning2@gmail.com"
 
