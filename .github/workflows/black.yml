@@ -16,7 +16,7 @@ jobs:
       - name: Run black
         run: |
           black .
-          git diff --quiet . || echo "::set-output name=black_changes::true"
+          git diff --exit-code . && echo "::set-output name=black_changes::true"
       - name: Commit changes
         if: steps.verify_diff.outputs.black_changes == 'true'
         run: |
