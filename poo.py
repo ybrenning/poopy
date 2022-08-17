@@ -1,20 +1,15 @@
 #!/usr/bin/env python3
 
-import os
 import asyncio
+import os
 import random
 
 import discord
-from discord.ext import commands
-
 import youtube_dl
-
+from discord.ext import commands
 from dotenv import load_dotenv
-
-from mcstatus import JavaServer
-
 from mcpi.minecraft import Minecraft
-
+from mcstatus.server import JavaServer
 
 mc = Minecraft.create("85.14.195.116", 4711)
 
@@ -23,7 +18,9 @@ MC_SERVER_IP = os.getenv("MC_SERVER_IP")
 TOKEN = os.getenv("DISCORD_TOKEN")
 
 bot = commands.Bot(command_prefix="$")
-mcserver = JavaServer.lookup(MC_SERVER_IP)
+
+if MC_SERVER_IP is not None:
+    mcserver = JavaServer.lookup(MC_SERVER_IP)
 
 
 @bot.event
