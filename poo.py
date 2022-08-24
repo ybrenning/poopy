@@ -11,8 +11,6 @@ from dotenv import load_dotenv
 from mcpi.minecraft import Minecraft
 from mcstatus.server import JavaServer
 
-mc = Minecraft.create("85.14.195.116", 4711)
-
 load_dotenv()
 MC_SERVER_IP = os.getenv("MC_SERVER_IP")
 TOKEN = os.getenv("DISCORD_TOKEN")
@@ -20,6 +18,7 @@ TOKEN = os.getenv("DISCORD_TOKEN")
 bot = commands.Bot(command_prefix="$")
 
 if MC_SERVER_IP is not None:
+    mc = Minecraft.create(MC_SERVER_IP, 4711)
     mcserver = JavaServer.lookup(MC_SERVER_IP)
 
 
@@ -58,7 +57,7 @@ async def play(ctx, url):
             voice_clients[voice_client.guild.id] = voice_client
         except discord.errors.ClientException as ce:
             # The bot is already connected to a voice channel
-            print(ce)
+            print(str(ce))
     else:
         await ctx.send("You are not connected to a voice channel :poop:")
 
@@ -75,7 +74,7 @@ async def play(ctx, url):
         print(f"Playing song in: {voice_clients[msg.guild.id]}")
         voice_clients[msg.guild.id].play(player)
     except Exception as err:
-        print(err)
+        print(str(err))
 
 
 @bot.command(
