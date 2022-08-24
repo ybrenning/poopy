@@ -25,6 +25,7 @@ if MC_SERVER_IP is not None:
 
 @bot.event
 async def on_ready():
+    assert bot.user is not None
     print(f"We have logged in as {bot.user.name}.")
 
 
@@ -41,7 +42,8 @@ async def ping(ctx):
     help="Takes a YouTube URL as an argument and joins your current vc to play the audio",
 )
 async def play(ctx, url):
-    voice_clients = {}
+    # Dict of voice channels such that we can keep track of the voice client in correspondance with the unique guild ID
+    voice_clients: dict = {}
 
     yt_dl_opts = {"format": "bestaudio/best"}
     ytdl = youtube_dl.YoutubeDL(yt_dl_opts)
@@ -51,8 +53,12 @@ async def play(ctx, url):
     msg = ctx.message
 
     if ctx.author.voice:
-        voice_client = await msg.author.voice.channel.connect()
-        voice_clients[voice_client.guild.id] = voice_client
+        try:
+            voice_client = await msg.author.voice.channel.connect()
+            voice_clients[voice_client.guild.id] = voice_client
+        except discord.errors.ClientException as ce:
+            # The bot is already connected to a voice channel
+            print(ce)
     else:
         await ctx.send("You are not connected to a voice channel :poop:")
 
@@ -62,6 +68,7 @@ async def play(ctx, url):
             None, lambda: ytdl.extract_info(url, download=False)
         )
 
+        assert data is not None
         song = data["url"]
         player = discord.FFmpegPCMAudio(song, **ffmpeg_options)
 
